@@ -1,0 +1,42 @@
+Создание ВМ ARM
+
+1. Необходимо установить FC23 Mate:
+- http://fedora-mirror01.rbc.ru/pub/fedora/linux/releases/23/Live/x86_64/Fedora-Live-MATE_Compiz-x86_64-23-10.iso
+
+2. Устанавка средств виртуализации qemu/virt-manager:
+# su -c "dnf install @virtualization"
+# sudo yum install qemu-system-arm libguestfs-tools
+
+3. Запуск ВМ 
+- https://fedoraproject.org/wiki/Architectures/ARM/F23/Installation
+- https://fedoraproject.org/wiki/Architectures/ARM/F22/Installation
+
+
+# TYPE= # Type of image used. (eg Minimal, KDE, Xfce, SoaS, MATE)
+# unxz Fedora-$TYPE-armhfp-23-10-sda.raw.xz
+
+# virt-builder --get-kernel Fedora-$TYPE-armhfp-23-10-sda.raw
+
+# sudo mv Fedora-$TYPE-armhfp-23-10-sda.raw vmlinuz-4.2.3-300.fc23.armv7hl initramfs-4.2.3-300.fc23.armv7hl.img /var/lib/libvirt/images/
+
+4. Изменение root-password:
+- https://rwmj.wordpress.com/2014/10/06/tip-set-a-root-password-on-a-disk-image/
+
+# virt-sysprep --enable customize --root-password password:12345678 -a Fedora-Mate-armhfp-22-3-sda.raw
+
+5. Using Virt-Manager (Graphical )
+
+    Start virt-manager, connect to 'QEMU', click the 'New VM' icon
+    On the first page, under 'Architecture Options' select 'arm'. The 'virt' machine type should be selected automatically
+    Select the 'Import install' option, go to the next page
+    Browse to the disk image, kernel, and initrd we moved in the previous step.
+    Set kernel args as: console=ttyAMA0 rw root=LABEL=_/ rootwait
+    Set the OS as Fedora 22.
+    Continue with the OS defaults, complete the install. 
+
+
+
+
+
+
+
